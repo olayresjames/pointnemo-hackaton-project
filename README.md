@@ -1,33 +1,44 @@
-# Point Nemo Film
+# Team PointNemo - AppBuilders Hackathon
 
-React Native app powered by Expo, with TypeScript and Expo Router. The existing `index.html` page is kept in the repository alongside the app.
+This repository contains Team PointNemo's project for the AppBuilders Hackathon. It brings together an Expo mobile and web app prototype for Point Nemo Film and a standalone bilingual About page.
 
-## Get started
+Point Nemo Film is presented in the About page as an independent production company telling stories that encourage people to look at the world differently. The Expo app is built with React Native, TypeScript, and Expo Router; its screens are currently based on the Expo starter template and are the foundation for the app prototype.
 
-Install dependencies, then start the development server:
+## Run the app
+
+Install dependencies and start Expo:
 
 ```bash
 npm install
 npm start
 ```
 
-From the Expo CLI, press `a` to open Android, `i` to open iOS, or `w` to open the web app. You can also run `npm run android`, `npm run ios`, or `npm run web` directly. iOS simulator builds require macOS; on Windows, use Expo Go or an iOS device.
+From the Expo CLI, press `a` for Android, `i` for iOS, or `w` for web. You can also start a platform directly:
 
-## Project structure
+```bash
+npm run android
+npm run ios
+npm run web
+```
 
-- `src/app/` contains file based routes and navigation layouts.
-- `src/components/` contains reusable UI components.
-- `assets/` contains app icons and images.
-- `app.json` contains the Expo app configuration.
+The iOS simulator requires macOS. On Windows, use Expo Go on a device or run the web version.
 
-Edit `src/app/index.tsx` to change the home screen.
+## Repository layout
+
+- `src/app/` - Expo Router screens and navigation layout.
+- `src/components/` - reusable app UI components.
+- `src/constants/` and `src/hooks/` - theme values and app hooks.
+- `assets/` - app icons, images, and other visual assets.
+- `index.html` - standalone Italian and English About page for Point Nemo.
+- `app.json` - Expo app configuration.
 
 ## Useful commands
 
 ```bash
-npm start          # Start Expo development server
-npm run android    # Start on Android
-npm run ios        # Start on iOS
-npm run web        # Start on web
-npm run reset-project  # Move the starter UI aside and create a clean route
+npm start                 # Start the Expo development server
+npm run android           # Start on Android
+npm run ios               # Start on iOS
+npm run web               # Start on web
+npm run lint              # Run Expo lint
+npm run reset-project     # Reset the Expo starter project
 ```
