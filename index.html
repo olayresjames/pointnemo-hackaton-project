@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Point Nemo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reset e variabili */
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #f8f8f8;
+            --red: #b4001e;
+            --red-dark: #940019;
+            --red-opaque: rgba(180, 0, 30, 0.7);
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+            color: var(--black);
+            background: var(--white);
+            overflow-x: hidden;
+            line-height: 1.2;
+            cursor: none;
+        }
+        
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--red);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease;
+        }
+        
+        .cursor-follower {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--black);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        a, button {
+            cursor: none !important;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: white;
+            transition: all 0.5s ease;
+        }
+        
+        header.hidden {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 500;
+            color: white;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        
+        .menu-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 101;
+        }
+        
+        .menu-line {
+            width: 30px;
+            height: 1px;
+            background: white;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn.active .menu-line:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+        
+        .menu-btn.active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-btn.active .menu-line:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+        
+        /* Menu Overlay */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248,248,248,0.98);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            z-index: 99;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .menu-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 100px;
+        }
+        
+        .menu-links a {
+            color: var(--red-opaque);
+            font-size: 5vw;
+            font-weight: 900;
+            font-family: 'Neue Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+            text-decoration: none;
+            margin: 15px 0;
+            position: relative;
+            transition: all 0.3s ease;
+            letter-spacing: -1px;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .menu-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Video Section */
+        .video-section {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .video-hero {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Content Section (testo + loghi + footer) */
+        .content-section {
+            width: 100vw;
+            min-height: 100vh;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Text Content */
+        .text-content {
+            padding: 100px 10% 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .main-text-large {
+            font-size: 3.5vw;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            font-weight: 400;
+            letter-spacing: -1px;
+            max-width: 900px;
+        }
+
+        .main-text-normal {
+            font-size: 1.5rem;
+            line-height: 1.4;
+            margin-bottom: 30px;
+            font-weight: 300;
+            max-width: 700px;
+        }
+
+        .point-nemo-red {
+            color: var(--red-opaque);
+            font-weight: 500;
+        }
+        
+        /* Bottone Scopri di Più */
+        .discover-more-btn {
+            display: inline-block;
+            margin: 20px 0 30px;
+            padding: 8px 16px;
+            background-color: var(--red-opaque); /* Stesso colore di "Point Nemo" */
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1px solid var(--red-opaque);
+            border-radius: 0;
+            transition: all 0.3s ease;
+            position: relative;
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .discover-more-btn:hover {
+            background-color: var(--red); /* Rosso più intenso al passaggio del mouse */
+            color: white;
+        }
+        
+        /* Logo Carousel */
+        .carousel-container {
+            margin: 30px 0 40px;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            padding: 0 5%;
+            box-sizing: border-box;
+        }
+        
+        .carousel-track {
+            display: flex;
+            width: calc(120px * 16);
+        }
+        
+        .carousel-row {
+            display: flex;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        .carousel-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .logo-item {
+            width: 120px;
+            min-width: 120px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-item img {
+            max-width: 100%;
+            height: auto;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .logo-item img:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        
+        /* Animations */
+        .carousel-row:first-child .carousel-track {
+            animation: scroll 30s linear infinite;
+        }
+        
+        .carousel-row:last-child .carousel-track {
+            animation: scrollReverse 25s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-120px * 8)); }
+        }
+        
+        @keyframes scrollReverse {
+            0% { transform: translateX(calc(-120px * 8)); }
+            100% { transform: translateX(0); }
+        }
+        
+        /* Footer */
+        footer {
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--white);
+        }
+        
+        .footer-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .social-links a {
+            color: var(--red);
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            opacity: 0.8;
+        }
+        
+        /* Language Selector */
+        .language-selector {
+            margin-left: 25px;
+            position: relative;
+        }
+        
+        .language-toggle {
+            background: none;
+            border: none;
+            color: var(--black);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+        }
+        
+        .language-toggle i {
+            margin-left: 8px;
+        }
+        
+        .language-flag {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 8px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .language-flag.it {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 6"><path fill="%23fff" d="M0 0h9v6H0z"/><path fill="%23009234" d="M0 0h3v6H0z"/><path fill="%23CE2B37" d="M6 0h3v6H6z"/></svg>');
+        }
+        
+        .language-flag.en {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30"><clipPath id="a"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="b"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(%23a)"><path fill="%23006" d="M0 0v30h60V0z"/><path stroke="%23fff" stroke-width="6" d="M0 0l60 30m0-30L0 30" clip-path="url(%23b)"/><path stroke="%23c00" stroke-width="4" d="M0 0l60 30m0-30L0 30" clip-path="url(%23b)"/><path stroke="%23fff" stroke-width="10" d="M30 0v30M0 15h60"/><path stroke="%23c00" stroke-width="6" d="M30 0v30M0 15h60"/></g></svg>');
+        }
+
+        /* Menu Footer */
+        .menu-footer {
+            width: 100%;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            margin-top: auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .text-content {
+                padding: 80px 5% 0;
+            }
+            
+            .main-text-large {
+                font-size: 2.1rem;
+                max-width: 100%;
+            }
+            
+            .main-text-normal {
+                font-size: 1.1rem;
+                max-width: 100%;
+            }
+            
+            .menu-links a {
+                font-size: 3rem;
+                font-weight: 900;
+            }
+            
+            header, footer {
+                padding: 20px;
+            }
+            
+            .carousel-container {
+                padding: 0 5%;
+                margin: 20px 0 30px;
+            }
+            
+            .logo-item {
+                width: 80px;
+                min-width: 80px;
+                padding: 0 10px;
+            }
+            
+            .carousel-track {
+                width: calc(80px * 16);
+            }
+            
+            .discover-more-btn {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+                margin: 15px 0 25px;
+            }
+            
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(calc(-80px * 8)); }
+            }
+            
+            @keyframes scrollReverse {
+                0% { transform: translateX(calc(-80px * 8)); }
+                100% { transform: translateX(0); }
+            }
+            
+            .social-links {
+                position: static;
+                transform: none;
+                margin-left: 15px;
+            }
+            
+            .social-links a {
+                margin: 0 10px;
+                font-size: 20px;
+            }
+            
+            .language-selector {
+                margin-left: 15px;
+            }
+            
+            .language-toggle {
+                font-size: 14px;
+            }
+            
+            .language-flag {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .main-text-large {
+                font-size: 4vw;
+            }
+            
+            .main-text-normal {
+                font-size: 1.3rem;
+            }
+            
+            .logo-item {
+                width: 100px;
+                min-width: 100px;
+            }
+            
+            .carousel-track {
+                width: calc(100px * 16);
+            }
+            
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(calc(-100px * 8)); }
+            }
+            
+            @keyframes scrollReverse {
+                0% { transform: translateX(calc(-100px * 8)); }
+                100% { transform: translateX(0); }
+            }
+        }
+
+        /* Traduzioni */
+        .lang-it { display: block; }
+        .lang-en { display: none; }
+        body.english .lang-it { display: none; }
+        body.english .lang-en { display: block; }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Video Section -->
+    <div class="video-section">
+        <video class="video-hero" autoplay muted loop playsinline>
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Header -->
+        <header id="main-header">
+            <a href="index.html" class="logo">POINT NEMO</a>
+            <div class="menu-btn">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+        </header>
+    </div>
+    
+    <!-- Content Section (testo + loghi + footer) -->
+    <div class="content-section">
+        <!-- Menu Overlay -->
+        <div class="menu-overlay">
+            <div class="menu-links">
+                <a href="index.html" class="lang-it">HOME</a>
+                <a href="index.html" class="lang-en">HOME</a>
+                <a href="works.html" class="lang-it">LAVORI</a>
+                <a href="works.html" class="lang-en">WORKS</a>
+                <a href="about.html" class="lang-it">CHI SIAMO</a>
+                <a href="about.html" class="lang-en">ABOUT</a>
+                <a href="contact.html" class="lang-it">CONTATTI</a>
+                <a href="contact.html" class="lang-en">CONTACT</a>
+            </div>
+            
+            <div class="menu-footer">
+                <div class="copyright">© Point Nemo Srl</div>
+                <div class="footer-right">
+                    <div class="social-links">
+                        <a href="https://instagram.com/pointnemo_film" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://facebook.com/pointnemofilm" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="mailto:info@pointnemofilm.it"><i class="fas fa-envelope"></i></a>
+                    </div>
+                    <div class="language-selector">
+                        <button class="language-toggle" id="language-toggle">
+                            <div class="language-flag it"></div>
+                            <span class="lang-it">IT</span>
+                            <span class="lang-en">EN</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Text Content -->
+        <div class="text-content">
+            <div class="main-text-large lang-it">
+                <span class="point-nemo-red">Point Nemo</span> è una casa di produzione indipendente che racconta storie capaci di accendere lo sguardo sul mondo.
+            </div>
+            <div class="main-text-large lang-en">
+                <span class="point-nemo-red">Point Nemo</span> is an independent production company that tells stories capable of igniting the gaze on the world.
+            </div>
+            <div class="main-text-normal lang-it">
+                Lavoriamo per un cinema autentico, radicato nella realtà e pensato per un pubblico globale.
+            </div>
+            <div class="main-text-normal lang-en">
+                We work for authentic cinema, rooted in reality and designed for a global audience.
+            </div>
+            
+            <!-- Bottone Scopri di Più / Discover More -->
+            <div style="display: inline-block">
+                <a href="#about-section" class="discover-more-btn lang-it">Scopri di più</a>
+                <a href="#about-section" class="discover-more-btn lang-en">Discover more</a>
+            </div>
+            
+            <!-- Logo Carousel -->
+            <div class="carousel-container">
+                <!-- First row (left to right) -->
+                <div class="carousel-row">
+                    <div class="carousel-track">
+                        <div class="logo-item"><img src="trentino.png" alt="Trentino"></div>
+                        <div class="logo-item"><img src="UNESCO.png" alt="UNESCO"></div>
+                        <div class="logo-item"><img src="Montura.png" alt="Montura"></div>
+                        <div class="logo-item"><img src="SIAE.png" alt="SIAE"></div>
+                        <div class="logo-item"><img src="Ministero.png" alt="Ministero"></div>
+                        <div class="logo-item"><img src="Ortovox.png" alt="Ortovox"></div>
+                        <div class="logo-item"><img src="source.png" alt="Source"></div>
+                        <div class="logo-item"><img src="Comune.png" alt="Comune di Milano"></div>
+                        
+                        <!-- Duplicate for seamless loop -->
+                        <div class="logo-item"><img src="trentino.png" alt="Trentino"></div>
+                        <div class="logo-item"><img src="UNESCO.png" alt="UNESCO"></div>
+                        <div class="logo-item"><img src="Montura.png" alt="Montura"></div>
+                        <div class="logo-item"><img src="SIAE.png" alt="SIAE"></div>
+                        <div class="logo-item"><img src="Ministero.png" alt="Ministero"></div>
+                        <div class="logo-item"><img src="Ortovox.png" alt="Ortovox"></div>
+                        <div class="logo-item"><img src="source.png" alt="Source"></div>
+                        <div class="logo-item"><img src="Comune.png" alt="Comune di Milano"></div>
+                    </div>
+                </div>
+                
+                <!-- Second row (right to left) -->
+                <div class="carousel-row">
+                    <div class="carousel-track">
+                        <div class="logo-item"><img src="raidocumentari.png" alt="RAI Documentari"></div>
+                        <div class="logo-item"><img src="Catania.png" alt="Catania Accademia"></div>
+                        <div class="logo-item"><img src="sky.png" alt="Sky"></div>
+                        <div class="logo-item"><img src="icimod.png" alt="ICIMOD"></div>
+                        <div class="logo-item"><img src="raialto.png" alt="RAI Alto"></div>
+                        <div class="logo-item"><img src="bertha.png" alt="Bertha"></div>
+                        <div class="logo-item"><img src="bolzano.png" alt="Bolzano"></div>
+                        <div class="logo-item"><img src="albedo.png" alt="Albedo"></div>
+                        
+                        <!-- Duplicate for seamless loop -->
+                        <div class="logo-item"><img src="raidocumentari.png" alt="RAI Documentari"></div>
+                        <div class="logo-item"><img src="Catania.png" alt="Catania Accademia"></div>
+                        <div class="logo-item"><img src="sky.png" alt="Sky"></div>
+                        <div class="logo-item"><img src="icimod.png" alt="ICIMOD"></div>
+                        <div class="logo-item"><img src="raialto.png" alt="RAI Alto"></div>
+                        <div class="logo-item"><img src="bertha.png" alt="Bertha"></div>
+                        <div class="logo-item"><img src="bolzano.png" alt="Bolzano"></div>
+                        <div class="logo-item"><img src="albedo.png" alt="Albedo"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="copyright">© Point Nemo Srl</div>
+            <div class="footer-right">
+                <div class="social-links">
+                    <a href="https://instagram.com/pointnemo_film" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://facebook.com/pointnemofilm" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="mailto:info@pointnemofilm.it"><i class="fas fa-envelope"></i></a>
+                </div>
+                <div class="language-selector">
+                    <button class="language-toggle" id="footer-language-toggle">
+                        <div class="language-flag it"></div>
+                        <span class="lang-it">IT</span>
+                        <span class="lang-en">EN</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Forza la riproduzione automatica del video
+            const video = document.querySelector('.video-hero');
+            video.play().catch(e => {
+                console.log("Autoplay non permesso, mostro pulsante di play");
+                // Qui potresti aggiungere un pulsante di play fallback
+            });
+
+            // Menu Toggle
+            const menuBtn = document.querySelector('.menu-btn');
+            const menuOverlay = document.querySelector('.menu-overlay');
+            
+            menuBtn.addEventListener('click', () => {
+                menuBtn.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                
+                if (menuOverlay.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Chiudi menu quando si clicca su un link
+            document.querySelectorAll('.menu-links a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuBtn.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+            
+            // Header visibility on scroll
+            const header = document.getElementById('main-header');
+            const videoSection = document.querySelector('.video-section');
+            
+            function checkHeaderVisibility() {
+                const videoSectionBottom = videoSection.getBoundingClientRect().bottom;
+                
+                if (videoSectionBottom <= 0) {
+                    header.classList.add('hidden');
+                } else {
+                    header.classList.remove('hidden');
+                }
+            }
+            
+            window.addEventListener('scroll', checkHeaderVisibility);
+            window.addEventListener('resize', checkHeaderVisibility);
+            
+            // Custom cursor
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            });
+            
+            // Cursor effects on hover
+            document.querySelectorAll('a, button, .menu-btn').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursorFollower.style.transform = 'translate(-50%, -50%) scale(0.8)';
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+            });
+
+            // Language toggle
+            const languageToggle = document.getElementById('language-toggle');
+            const footerLanguageToggle = document.getElementById('footer-language-toggle');
+            
+            function toggleLanguage() {
+                document.body.classList.toggle('english');
+                const isEnglish = document.body.classList.contains('english');
+                
+                // Cambia bandiera e testo
+                const flagElements = document.querySelectorAll('.language-flag');
+                flagElements.forEach(flag => {
+                    if (isEnglish) {
+                        flag.classList.remove('it');
+                        flag.classList.add('en');
+                    } else {
+                        flag.classList.remove('en');
+                        flag.classList.add('it');
+                    }
+                });
+                
+                // Cambia titolo della pagina
+                document.title = isEnglish ? "About - Point Nemo" : "Chi Siamo - Point Nemo";
+            }
+            
+            languageToggle.addEventListener('click', toggleLanguage);
+            footerLanguageToggle.addEventListener('click', toggleLanguage);
+            
+            // Controlla se c'è una preferenza di lingua salvata
+            if (localStorage.getItem('preferredLanguage') === 'en') {
+                document.body.classList.add('english');
+                document.querySelectorAll('.language-flag').forEach(flag => {
+                    flag.classList.remove('it');
+                    flag.classList.add('en');
+                });
+                document.title = "About - Point Nemo";
+            }
+            
+            // Salva la preferenza di lingua
+            function saveLanguagePreference() {
+                const isEnglish = document.body.classList.contains('english');
+                localStorage.setItem('preferredLanguage', isEnglish ? 'en' : 'it');
+            }
+            
+            languageToggle.addEventListener('click', saveLanguagePreference);
+            footerLanguageToggle.addEventListener('click', saveLanguagePreference);
+
+            // Smooth scroll per il bottone Scopri di Più
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#about-section') {
+                        // Animazione di scroll
+                        const targetSection = document.getElementById('about-section');
+                        if (targetSection) {
+                            targetSection.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
